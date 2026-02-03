@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <template class="HelloWindow" parent="GtkApplicationWindow">
+    <!-- Window properties -->
+    <property name="title" translatable="yes">Hello World</property>
+    <property name="default-width">400</property>
+    <property name="default-height">300</property>
+    <property name="resizable">TRUE</property>
+    
+    <!-- Window content -->
+    <child>
+      <object class="GtkBox" id="main_box">
+        <property name="orientation">vertical</property>
+        <property name="spacing">10</property>
+        <property name="margin-start">20</property>
+        <property name="margin-end">20</property>
+        <property name="margin-top">20</property>
+        <property name="margin-bottom">20</property>
+        <property name="halign">center</property>
+        <property name="valign">center</property>
+        
+        <child>
+          <object class="GtkLabel" id="greeting_label">
+            <property name="label" translatable="yes">Hello World!</property>
+            <property name="halign">center</property>
+            <property name="valign">center</property>
+            <style>
+              <class name="title-1"/>
+            </style>
+          </object>
+        </child>
+        
+        <child>
+          <object class="GtkButton" id="close_button">
+            <property name="label" translatable="yes">Close</property>
+            <property name="halign">center</property>
+            <property name="tooltip-text" translatable="yes">Close application</property>
+            <property name="margin-top">20</property>
+            <signal name="clicked" handler="on_close_button_clicked" swapped="no"/>
+            <style>
+              <class name="suggested-action"/>
+            </style>
+          </object>
+        </child>
+        
+        <child>
+          <object class="GtkButton" id="open_image_button">
+            <property name="label" translatable="yes">Open Image</property>
+            <property name="halign">center</property>
+            <property name="tooltip-text" translatable="yes">Open image file</property>
+            <property name="margin-top">10</property>
+            <signal name="clicked" handler="on_open_image_button_clicked" swapped="no"/>
+            <style>
+              <class name="suggested-action"/>
+            </style>
+          </object>
+        </child>
+        
+      </object>
+    </child>
+  </template>
+</interface>
