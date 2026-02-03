@@ -10,6 +10,7 @@ project('hello-app', 'c',
 
 # Dependencies
 gtk_dep = dependency('gtk4', version: '>= 4.0.0')
+math_dep = dependency('m', required: true)
 check_dep = dependency('check', required: false)
 
 # Generate config.h
@@ -50,7 +51,7 @@ image_processing_lib = static_library('image-processing',
 # Blur processing library for Gaussian blur effects
 blur_processor_lib = static_library('blur-processor',
   'src/lib/blur-processor.c',
-  dependencies: [gtk_dep],
+  dependencies: [gtk_dep, math_dep],
   include_directories: inc
 )
 
@@ -108,7 +109,7 @@ if check_dep.found()
 
   test_blur_processor = executable('test-blur-processor',
     'tests/unit/test-blur-processor.c',
-    dependencies: [gtk_dep, check_dep],
+    dependencies: [gtk_dep, check_dep, math_dep],
     link_with: [blur_processor_lib],
     include_directories: inc
   )
@@ -122,7 +123,7 @@ if check_dep.found()
 
   test_blur_ui = executable('test-blur-ui',
     'tests/integration/test-blur-ui.c',
-    dependencies: [gtk_dep, check_dep],
+    dependencies: [gtk_dep, check_dep, math_dep],
     link_with: [gtk_utils_lib, image_processing_lib, blur_processor_lib, blur_cache_lib],
     include_directories: inc
   )
