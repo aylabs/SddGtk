@@ -1,7 +1,7 @@
 #include <check.h>
 #include <gtk/gtk.h>
-#include "../src/hello-app/hello-application.h"
-#include "../src/hello-app/hello-window.h"
+#include "src/hello-app/hello-application.h"
+#include "src/hello-app/hello-window.h"
 
 /* Test fixtures */
 static HelloApplication *test_app = NULL;

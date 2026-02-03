@@ -1,6 +1,6 @@
 #include <check.h>
 #include <gtk/gtk.h>
-#include "../../src/lib/image-processing.h"
+#include "src/lib/image-processing.h"
 
 /* Test fixtures and helper functions */
 

@@ -5,8 +5,8 @@
 
 #include <glib.h>
 #include <gtk/gtk.h>
-#include "../../src/hello-app/hello-image-viewer.h"
-#include "../../src/lib/image-processing.h"
+#include "src/hello-app/hello-image-viewer.h"
+#include "src/lib/image-processing.h"
 
 /* Test fixtures */
 static GtkApplication *app = NULL;
