@@ -80,16 +80,16 @@ hello_app = executable('hello-app',
 # Unit tests (if Check framework is available)
 if check_dep.found()
   test_hello_application = executable('test-hello-application',
-    ['tests/unit/test-hello-application.c', 'src/hello-app/hello-application.c'],
-    dependencies: [gtk_dep, check_dep],
-    link_with: [gtk_utils_lib],
+    ['tests/unit/test-hello-application.c', 'src/hello-app/hello-application.c', 'src/hello-app/hello-window.c', 'src/hello-app/hello-image-viewer.c', resources],
+    dependencies: [gtk_dep, check_dep, math_dep],
+    link_with: [gtk_utils_lib, image_processing_lib, blur_processor_lib, blur_cache_lib],
     include_directories: inc
   )
 
   test_hello_window = executable('test-hello-window',
-    ['tests/unit/test-hello-window.c', 'src/hello-app/hello-window.c', 'src/hello-app/hello-application.c'],
-    dependencies: [gtk_dep, check_dep],
-    link_with: [gtk_utils_lib],
+    ['tests/unit/test-hello-window.c', 'src/hello-app/hello-window.c', 'src/hello-app/hello-application.c', 'src/hello-app/hello-image-viewer.c', resources],
+    dependencies: [gtk_dep, check_dep, math_dep],
+    link_with: [gtk_utils_lib, image_processing_lib, blur_processor_lib, blur_cache_lib],
     include_directories: inc
   )
 
@@ -101,9 +101,9 @@ if check_dep.found()
   )
 
   test_image_viewer_bw = executable('test-image-viewer-bw',
-    'tests/unit/test-image-viewer-bw.c',
-    dependencies: [gtk_dep, check_dep],
-    link_with: [gtk_utils_lib, image_processing_lib],
+    ['tests/unit/test-image-viewer-bw.c', 'src/hello-app/hello-image-viewer.c', 'src/hello-app/hello-window.c', 'src/hello-app/hello-application.c', resources],
+    dependencies: [gtk_dep, check_dep, math_dep],
+    link_with: [gtk_utils_lib, image_processing_lib, blur_processor_lib, blur_cache_lib],
     include_directories: inc
   )
 
