@@ -37,7 +37,7 @@ START_TEST(test_hello_window_creation)
     ck_assert(GTK_IS_APPLICATION_WINDOW(window));
     ck_assert(GTK_IS_WINDOW(window));
     
-    gtk_widget_destroy(GTK_WIDGET(window));
+    gtk_window_destroy(GTK_WINDOW(window));
 }
 END_TEST
 
@@ -64,7 +64,7 @@ START_TEST(test_hello_window_properties)
     ck_assert_int_eq(width, 400);
     ck_assert_int_eq(height, 300);
     
-    gtk_widget_destroy(GTK_WIDGET(window));
+    gtk_window_destroy(GTK_WINDOW(window));
 }
 END_TEST
 
@@ -90,7 +90,7 @@ START_TEST(test_hello_window_greeting_property)
     greeting = hello_window_get_greeting(window);
     ck_assert_str_eq(greeting, "Hello World!"); /* Should revert to default */
     
-    gtk_widget_destroy(GTK_WIDGET(window));
+    gtk_window_destroy(GTK_WINDOW(window));
 }
 END_TEST
 
@@ -107,7 +107,7 @@ START_TEST(test_hello_window_close_button)
     ck_assert(GTK_IS_WINDOW(window));
     
     /* Clean up */
-    gtk_widget_destroy(GTK_WIDGET(window));
+    gtk_window_destroy(GTK_WINDOW(window));
 }
 END_TEST
 

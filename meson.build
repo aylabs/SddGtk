@@ -80,14 +80,14 @@ hello_app = executable('hello-app',
 # Unit tests (if Check framework is available)
 if check_dep.found()
   test_hello_application = executable('test-hello-application',
-    'tests/unit/test-hello-application.c',
+    ['tests/unit/test-hello-application.c', 'src/hello-app/hello-application.c'],
     dependencies: [gtk_dep, check_dep],
     link_with: [gtk_utils_lib],
     include_directories: inc
   )
 
   test_hello_window = executable('test-hello-window',
-    'tests/unit/test-hello-window.c',
+    ['tests/unit/test-hello-window.c', 'src/hello-app/hello-window.c', 'src/hello-app/hello-application.c'],
     dependencies: [gtk_dep, check_dep],
     link_with: [gtk_utils_lib],
     include_directories: inc
