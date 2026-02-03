@@ -40,17 +40,26 @@ add_library(gtk-utils STATIC
 target_link_libraries(gtk-utils ${GTK4_LIBRARIES})
 target_include_directories(gtk-utils PRIVATE ${GTK4_INCLUDE_DIRS})
 
+# Image processing library for B&W conversion
+add_library(image-processing STATIC
+    src/lib/image-processing.c
+)
+target_link_libraries(image-processing ${GTK4_LIBRARIES})
+target_include_directories(image-processing PRIVATE ${GTK4_INCLUDE_DIRS})
+
 # Main executable
 add_executable(hello-app
     src/hello-app/main.c
     src/hello-app/hello-application.c
     src/hello-app/hello-window.c
+    src/hello-app/hello-image-viewer.c
     ${CMAKE_BINARY_DIR}/hello-resources.c
 )
 
 target_link_libraries(hello-app 
     ${GTK4_LIBRARIES} 
     gtk-utils
+    image-processing
 )
 target_include_directories(hello-app PRIVATE ${GTK4_INCLUDE_DIRS})
 target_compile_options(hello-app PRIVATE ${GTK4_CFLAGS_OTHER})
@@ -82,6 +91,29 @@ if(CHECK_FOUND)
     )
     target_include_directories(test-hello-window PRIVATE ${GTK4_INCLUDE_DIRS} ${CHECK_INCLUDE_DIRS})
     
+    add_executable(test-image-processing
+        tests/unit/test-image-processing.c
+    )
+    target_link_libraries(test-image-processing 
+        ${GTK4_LIBRARIES} 
+        ${CHECK_LIBRARIES}
+        image-processing
+    )
+    target_include_directories(test-image-processing PRIVATE ${GTK4_INCLUDE_DIRS} ${CHECK_INCLUDE_DIRS})
+    
+    add_executable(test-image-viewer-bw
+        tests/unit/test-image-viewer-bw.c
+    )
+    target_link_libraries(test-image-viewer-bw 
+        ${GTK4_LIBRARIES} 
+        ${CHECK_LIBRARIES}
+        gtk-utils
+        image-processing
+    )
+    target_include_directories(test-image-viewer-bw PRIVATE ${GTK4_INCLUDE_DIRS} ${CHECK_INCLUDE_DIRS})
+    
     add_test(NAME test-hello-application COMMAND test-hello-application)
     add_test(NAME test-hello-window COMMAND test-hello-window)
+    add_test(NAME test-image-processing COMMAND test-image-processing)
+    add_test(NAME test-image-viewer-bw COMMAND test-image-viewer-bw)
 endif()
