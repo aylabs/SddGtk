@@ -1,0 +1,78 @@
+# Build directories
+build/
+builddir/
+_build/
+_builddir/
+
+# Compiled binaries
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.exe
+hello-app
+
+# C specific
+*.out
+core
+*.core
+
+# GTK specific
+*.gresource
+*.gresource.c
+
+# Meson build files
+.mesonpy/
+compile_commands.json
+
+# CMake build files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+*.cmake
+Makefile
+
+# Package configuration
+*.pc
+*.pc.in
+
+# Debug files
+*.dSYM/
+*.pdb
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Testing artifacts
+test-results/
+*.gcno
+*.gcda
+*.lcov
+coverage/
+
+# Distribution packages
+dist/
+*.tar.gz
+*.tar.xz
+*.zip
+
+# Environment specific
+.env
+.env.local
+.env.development
+.env.test
+.env.production

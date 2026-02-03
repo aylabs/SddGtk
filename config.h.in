@@ -1,0 +1,2 @@
+#define VERSION "@PROJECT_VERSION@"
+#define APPLICATION_ID "com.example.HelloApp"

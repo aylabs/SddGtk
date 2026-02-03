@@ -1,0 +1,83 @@
+project('hello-app', 'c',
+  version: '1.0.0',
+  license: 'MIT',
+  default_options: [
+    'warning_level=3',
+    'c_std=c11',
+    'werror=false'
+  ]
+)
+
+# Dependencies
+gtk_dep = dependency('gtk4', version: '>= 4.0.0')
+check_dep = dependency('check', required: false)
+
+# Generate config.h
+config_data = configuration_data()
+config_data.set_quoted('VERSION', meson.project_version())
+config_data.set_quoted('APPLICATION_ID', 'com.example.HelloApp')
+configure_file(
+  output: 'config.h',
+  configuration: config_data
+)
+
+# Include directories
+inc = include_directories('src', '.')
+
+# GResource compilation
+gnome = import('gnome')
+resources = gnome.compile_resources(
+  'hello-resources',
+  'src/hello-app/hello-app.gresource.xml',
+  source_dir: 'src/hello-app',
+  c_name: 'hello_resources'
+)
+
+# Library for reusable GTK utilities
+gtk_utils_lib = static_library('gtk-utils',
+  'src/lib/gtk-utils.c',
+  dependencies: [gtk_dep],
+  include_directories: inc
+)
+
+# Main application executable
+hello_app = executable('hello-app',
+  [
+    'src/hello-app/main.c',
+    'src/hello-app/hello-application.c',
+    'src/hello-app/hello-window.c',
+    'src/hello-app/hello-image-viewer.c',
+    resources,
+  ],
+  dependencies: [gtk_dep],
+  link_with: [gtk_utils_lib],
+  include_directories: inc,
+  install: true
+)
+
+# Unit tests (if Check framework is available)
+if check_dep.found()
+  test_hello_application = executable('test-hello-application',
+    'tests/unit/test-hello-application.c',
+    dependencies: [gtk_dep, check_dep],
+    link_with: [gtk_utils_lib],
+    include_directories: inc
+  )
+
+  test_hello_window = executable('test-hello-window',
+    'tests/unit/test-hello-window.c',
+    dependencies: [gtk_dep, check_dep],
+    link_with: [gtk_utils_lib],
+    include_directories: inc
+  )
+
+  test('test-hello-application', test_hello_application)
+  test('test-hello-window', test_hello_window)
+endif
+
+# Install desktop file and icon (optional for later phases)
+if get_option('install_desktop_files')
+  install_data('data/hello-app.desktop',
+    install_dir: join_paths(get_option('datadir'), 'applications')
+  )
+endif

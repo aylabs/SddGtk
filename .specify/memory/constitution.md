@@ -1,50 +1,89 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# GTK Cross-Platform GUI Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. GTK-First GUI Development (NON-NEGOTIABLE)
+All graphical user interface applications MUST be developed using GTK (GIMP Toolkit) as the primary and exclusive GUI framework. This applies to all target platforms:
+- **Linux**: Native GTK support through system package managers
+- **Windows**: GTK applications via MSYS2/MinGW-w64 or official GTK bundles
+- **macOS**: GTK applications via Homebrew, MacPorts, or official GTK bundles
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+No exceptions are permitted for native platform UI frameworks (Win32, Cocoa, Qt, etc.). All GUI components must utilize GTK widgets and follow GTK design patterns.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### II. Cross-Platform Compatibility
+GUI applications MUST function identically across Linux, Windows, and macOS environments:
+- Use GTK's cross-platform abstractions for file operations, threading, and system integration
+- Test on all three target platforms before release
+- Document platform-specific installation and deployment procedures
+- Ensure consistent visual appearance and behavior across platforms
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### III. GTK Best Practices
+All GTK development MUST adhere to established best practices:
+- Use GtkBuilder for UI definition with .ui XML files
+- Implement proper signal handling and event management
+- Follow GTK naming conventions and coding standards
+- Utilize GTK's built-in accessibility features
+- Implement proper memory management with GObject reference counting
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### IV. Library-First Architecture
+GUI functionality MUST be organized as reusable libraries:
+- Separate business logic from GUI presentation layers
+- Create modular GTK widget libraries for common UI patterns
+- Ensure GUI libraries are independently testable
+- Document public APIs for all GUI components
+- Provide both programmatic and GtkBuilder interfaces
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### V. Testing Requirements
+All GTK GUI code MUST be thoroughly tested:
+- Unit tests for business logic separated from GUI
+- GTK widget testing using appropriate testing frameworks
+- Visual regression testing for UI consistency
+- Automated testing across all target platforms
+- Manual testing procedures for platform-specific behaviors
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+## Platform Integration Standards
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+### Development Environment Setup
+- Linux: Use system GTK development packages (libgtk-3-dev or libgtk-4-dev)
+- Windows: Use MSYS2 environment with mingw-w64-gtk packages
+- macOS: Use Homebrew gtk+3 or gtk4 packages
+- All platforms must support the same GTK major version
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### Deployment and Distribution
+- Provide native installation packages for each platform
+- Bundle GTK runtime dependencies when system packages unavailable
+- Document GTK version requirements and compatibility matrix
+- Ensure consistent GTK theming across platforms
+
+### Performance Standards
+- GUI responsiveness: Maximum 100ms response time for user interactions
+- Memory efficiency: Proper GObject cleanup and reference management
+- Startup time: Applications must launch within 3 seconds on target hardware
+
+## Development Workflow
+
+### Code Review Requirements
+- All GUI code changes require review for GTK compliance
+- Cross-platform testing verification before merge approval
+- Accessibility compliance verification for all new UI components
+- Performance impact assessment for GUI modifications
+
+### Quality Gates
+- Successful compilation and testing on all three target platforms
+- GTK coding standards compliance verification
+- Memory leak detection using Valgrind (Linux) and similar tools
+- Visual consistency verification across platforms
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes all other development practices and framework choices for GUI development. The GTK-First principle is non-negotiable and applies to all current and future GUI applications.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+Amendments to this constitution require:
+1. Technical justification for any proposed changes
+2. Approval from project maintainers
+3. Migration plan for existing non-compliant code
+4. Updated testing and deployment procedures
+
+All pull requests and code reviews must verify compliance with these constitutional requirements. Deviations from GTK-First development must be explicitly justified and approved through the constitutional amendment process.
+
+**Version**: 1.0.0 | **Ratified**: 2026-02-01 | **Last Amended**: 2026-02-01
