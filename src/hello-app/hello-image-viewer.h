@@ -2,6 +2,8 @@
 #define HELLO_IMAGE_VIEWER_H
 
 #include <gtk/gtk.h>
+#include "../lib/blur-processor.h"
+#include "../lib/blur-cache.h"
 
 G_BEGIN_DECLS
 
@@ -60,6 +62,43 @@ gboolean hello_image_viewer_get_conversion_state(HelloImageViewer *viewer);
  * When disabled, button is hidden and conversion state is reset.
  */
 void hello_image_viewer_set_conversion_enabled(HelloImageViewer *viewer, gboolean enabled);
+
+/* Blur functionality - Task T020 */
+
+/**
+ * hello_image_viewer_get_blur_intensity:
+ * @viewer: A HelloImageViewer instance
+ *
+ * Gets current blur intensity setting.
+ *
+ * Returns: Current blur intensity 0.0-10.0, or -1.0 if blur not initialized
+ */
+gdouble hello_image_viewer_get_blur_intensity(HelloImageViewer *viewer);
+
+/**
+ * hello_image_viewer_set_blur_intensity:
+ * @viewer: A HelloImageViewer instance
+ * @intensity: New blur intensity 0.0-10.0
+ * @animate: TRUE to animate slider to new position
+ *
+ * Programmatically sets blur intensity and updates the image.
+ *
+ * Returns: TRUE if intensity applied successfully, FALSE on error
+ */
+gboolean hello_image_viewer_set_blur_intensity(HelloImageViewer *viewer,
+                                              gdouble intensity,
+                                              gboolean animate);
+
+/**
+ * hello_image_viewer_blur_reset:
+ * @viewer: A HelloImageViewer instance
+ * @clear_cache: TRUE to also clear cached blur results
+ *
+ * Resets blur to disabled state (intensity = 0.0).
+ *
+ * Returns: TRUE on successful reset, FALSE on error
+ */
+gboolean hello_image_viewer_blur_reset(HelloImageViewer *viewer, gboolean clear_cache);
 
 G_END_DECLS
 
