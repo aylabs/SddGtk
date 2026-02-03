@@ -10,7 +10,7 @@ project('hello-app', 'c',
 
 # Dependencies
 gtk_dep = dependency('gtk4', version: '>= 4.0.0')
-math_dep = dependency('m', required: true)
+math_dep = meson.get_compiler('c').find_library('m', required: false)
 check_dep = dependency('check', required: false)
 
 # Generate config.h
