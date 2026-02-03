@@ -1,0 +1,244 @@
+/* 
+ * CSS Styling for Image B&W Conversion Feature
+ * Provides visual enhancements for the conversion button and states
+ */
+
+/* Conversion button base styling */
+.image-viewer-button {
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 200ms ease-in-out;
+    min-width: 40px;
+    min-height: 32px;
+}
+
+/* Conversion button hover state */
+.image-viewer-button:hover {
+    background: alpha(@accent_color, 0.1);
+    box-shadow: 0 2px 4px alpha(@borders, 0.2);
+    transform: translateY(-1px);
+}
+
+/* Conversion button active/pressed state (B&W mode) */
+.image-viewer-button:checked {
+    background: @accent_color;
+    color: @accent_fg_color;
+    box-shadow: inset 0 1px 2px alpha(@borders, 0.3);
+}
+
+/* Conversion button focused state (keyboard navigation) */
+.image-viewer-button:focus {
+    outline: 2px solid @accent_color;
+    outline-offset: 2px;
+}
+
+/* Disabled state (no image loaded) */
+.image-viewer-button:disabled {
+    opacity: 0.5;
+    background: alpha(@insensitive_bg_color, 0.5);
+    color: @insensitive_fg_color;
+    box-shadow: none;
+    transform: none;
+}
+
+/* Processing state indicator */
+.image-viewer-button.processing {
+    background: alpha(@warning_color, 0.2);
+    color: @warning_fg_color;
+    animation: processing-pulse 1s ease-in-out infinite;
+}
+
+/* Processing animation */
+@keyframes processing-pulse {
+    0% { opacity: 0.7; }
+    50% { opacity: 1.0; }
+    100% { opacity: 0.7; }
+}
+
+/* Image viewer window styling */
+.image-viewer-window {
+    background: @window_bg_color;
+}
+
+/* Header bar in image viewer */
+.image-viewer-window .headerbar {
+    background: @headerbar_bg_color;
+    color: @headerbar_fg_color;
+    border-bottom: 1px solid @borders;
+}
+
+/* Image display area */
+.image-display-area {
+    background: @view_bg_color;
+    border: 1px solid alpha(@borders, 0.2);
+    border-radius: 8px;
+    margin: 8px;
+}
+
+/* Scrolled window containing the image */
+.image-scrolled-window {
+    background: transparent;
+}
+
+/* Picture widget styling */
+.image-picture {
+    background: transparent;
+}
+
+/* High contrast theme support */
+@media (prefers-contrast: high) {
+    .image-viewer-button {
+        border: 2px solid @borders;
+    }
+    
+    .image-viewer-button:checked {
+        border-color: @accent_color;
+        background: @accent_color;
+    }
+    
+    .image-viewer-button:focus {
+        outline-width: 3px;
+    }
+}
+
+/* Dark theme adaptations */
+@media (prefers-color-scheme: dark) {
+    .image-display-area {
+        background: alpha(@view_bg_color, 0.8);
+        border-color: alpha(@borders, 0.4);
+    }
+    
+    .image-viewer-button:hover {
+        background: alpha(@accent_color, 0.15);
+    }
+}
+
+/* 
+ * Blur Slider Styling - T028
+ * Provides visual styling for blur intensity control
+ */
+
+/* Blur control container styling */
+.blur-container {
+    margin-left: 16px;
+    margin-right: 8px;
+    padding: 0 8px;
+}
+
+/* Blur intensity slider styling */
+.blur-slider {
+    min-width: 150px;
+    margin: 0 4px;
+}
+
+.blur-slider slider {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    min-width: 16px;
+    min-height: 16px;
+}
+
+.blur-slider trough {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    min-height: 4px;
+}
+
+.blur-slider highlight {
+    background-color: @accent_color;
+    border-radius: 3px;
+}
+
+/* Blur value label styling */
+.blur-value-label {
+    min-width: 2.5em;
+    font-size: 0.9em;
+    font-variant-numeric: tabular-nums;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* Blur icon styling */
+.blur-icon {
+    opacity: 0.8;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Hover states */
+.blur-slider:hover trough {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+.blur-slider:hover highlight {
+    background-color: alpha(@accent_color, 0.8);
+}
+
+/* Active/pressed state */
+.blur-slider:active slider {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Disabled state */
+.blur-slider:disabled {
+    opacity: 0.5;
+}
+
+.blur-slider:disabled trough {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.blur-slider:disabled highlight {
+    background-color: rgba(128, 128, 128, 0.3);
+}
+
+/* Focus indicator for accessibility */
+.blur-slider:focus slider {
+    box-shadow: 0 0 0 2px rgba(53, 132, 228, 0.7);
+    outline: none;
+}
+
+/* RTL language support */
+.blur-container:dir(rtl) {
+    margin-left: 8px;
+    margin-right: 16px;
+}
+
+/* Dark theme adaptations for blur controls */
+@media (prefers-color-scheme: dark) {
+    .blur-slider slider {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+    
+    .blur-slider trough {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .blur-value-label {
+        color: rgba(255, 255, 255, 0.9);
+    }
+    
+    .blur-icon {
+        color: rgba(255, 255, 255, 0.8);
+    }
+}
+
+/* High contrast theme support for blur controls */
+@media (prefers-contrast: high) {
+    .blur-slider {
+        border: 1px solid @borders;
+        border-radius: 4px;
+    }
+    
+    .blur-slider slider {
+        border: 2px solid @accent_color;
+        background-color: @window_bg_color;
+    }
+    
+    .blur-slider trough {
+        border: 1px solid @borders;
+    }
+    
+    .blur-value-label {
+        color: @window_fg_color;
+        font-weight: bold;
+    }
+}

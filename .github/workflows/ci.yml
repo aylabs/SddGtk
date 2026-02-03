@@ -38,7 +38,8 @@ jobs:
           libgdk-pixbuf-2.0-dev \
           python3 \
           python3-pip \
-          valgrind
+          valgrind \
+          libxml2-utils
         pip3 install pillow
         
     - name: Configure build
