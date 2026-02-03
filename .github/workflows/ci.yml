@@ -1,3 +1,13 @@
+# CI Pipeline for GTK Cross-Platform GUI Project
+# 
+# Constitutional Compliance (v1.0.1):
+# All automated CI/CD pipeline testing MUST be executed exclusively on Ubuntu platform
+# to ensure consistent and reliable build environments while maintaining cross-platform
+# manual testing procedures.
+#
+# Cross-platform compatibility is verified through manual testing on Linux, Windows, and macOS
+# as specified in the project constitution.
+
 name: CI
 
 on:
@@ -9,18 +19,14 @@ on:
 
 jobs:
   test:
-    name: Test on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
+    name: Test on Ubuntu (Constitutional Requirement)
+    runs-on: ubuntu-latest
         
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       
-    - name: Setup dependencies (Ubuntu)
-      if: matrix.os == 'ubuntu-latest'
+    - name: Setup dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y \
@@ -33,19 +39,6 @@ jobs:
           python3 \
           python3-pip \
           valgrind
-        pip3 install pillow
-        
-    - name: Setup dependencies (macOS)
-      if: matrix.os == 'macos-latest'
-      run: |
-        brew update
-        brew install \
-          meson \
-          ninja \
-          pkg-config \
-          gtk4 \
-          gdk-pixbuf \
-          python3
         pip3 install pillow
         
     - name: Configure build
@@ -63,11 +56,10 @@ jobs:
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: test-results-${{ matrix.os }}
+        name: test-results-ubuntu
         path: test-results/
         
-    - name: Memory leak check (Ubuntu only)
-      if: matrix.os == 'ubuntu-latest'
+    - name: Memory leak check
       run: |
         echo "Running memory leak checks with Valgrind..."
         for test_file in builddir/test-*; do

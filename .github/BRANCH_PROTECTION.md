@@ -8,10 +8,11 @@
 - ✅ Require status checks to pass before merging
 - ✅ Require branches to be up to date before merging
 - Required checks:
-  - `test (ubuntu-latest)`
-  - `test (macos-latest)`  
+  - `test (Ubuntu - Constitutional Requirement)`
   - `build-check`
   - `code-quality`
+
+<!-- Constitutional Compliance v1.0.1: Only Ubuntu testing required in pipelines -->
 
 ### Pull Request Requirements:
 - ✅ Require a pull request before merging
@@ -31,10 +32,10 @@
 ## GitHub CLI Commands to Apply Settings:
 
 ```bash
-# Enable branch protection with required status checks
+# Enable branch protection with required status checks (Ubuntu-only per Constitution v1.0.1)
 gh api repos/aylabs/SddGtk/branches/main/protection \
   --method PUT \
-  --field required_status_checks='{"strict":true,"contexts":["test (ubuntu-latest)","test (macos-latest)","build-check","code-quality"]}' \
+  --field required_status_checks='{"strict":true,"contexts":["test (Ubuntu - Constitutional Requirement)","build-check","code-quality"]}' \
   --field enforce_admins=true \
   --field required_pull_request_reviews='{"required_approving_review_count":1,"dismiss_stale_reviews":true}' \
   --field restrictions=null

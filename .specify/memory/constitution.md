@@ -1,3 +1,25 @@
+<!--
+SYNC IMPACT REPORT - Constitutional Amendment v1.0.1
+
+Version Change: 1.0.0 → 1.0.1
+Amendment Date: 2026-02-03
+
+Modified Principles:
+- V. Testing Requirements: Added Ubuntu-only pipeline testing requirement
+
+Added Sections:
+- Pipeline Testing specification under Testing Requirements
+
+Templates Status:
+✅ Updated: Constitution aligns with existing templates
+⚠ Review: CI/CD configurations should verify Ubuntu platform requirement
+
+Follow-up Actions:
+- Verify all pipeline configurations use Ubuntu runners exclusively  
+- Update CI/CD documentation to reflect Ubuntu-only testing policy
+- Consider adding pipeline validation checks for platform compliance
+-->
+
 # GTK Cross-Platform GUI Constitution
 
 ## Core Principles
@@ -40,6 +62,7 @@ All GTK GUI code MUST be thoroughly tested:
 - Visual regression testing for UI consistency
 - Automated testing across all target platforms
 - Manual testing procedures for platform-specific behaviors
+- **Pipeline Testing**: All automated CI/CD pipeline testing MUST be executed exclusively on Ubuntu platform to ensure consistent and reliable build environments
 
 ## Platform Integration Standards
 
@@ -86,4 +109,4 @@ Amendments to this constitution require:
 
 All pull requests and code reviews must verify compliance with these constitutional requirements. Deviations from GTK-First development must be explicitly justified and approved through the constitutional amendment process.
 
-**Version**: 1.0.0 | **Ratified**: 2026-02-01 | **Last Amended**: 2026-02-01
+**Version**: 1.0.1 | **Ratified**: 2026-02-01 | **Last Amended**: 2026-02-03
