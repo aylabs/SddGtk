@@ -39,7 +39,9 @@ jobs:
           python3 \
           python3-pip \
           valgrind \
-          libxml2-utils
+          libxml2-utils \
+          check \
+          libcheck-dev
         pip3 install pillow
         
     - name: Configure build
