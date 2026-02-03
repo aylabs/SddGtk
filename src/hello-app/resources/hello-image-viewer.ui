@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <template class="HelloImageViewer" parent="GtkWindow">
+    <property name="title" translatable="yes">Image Viewer</property>
+    <property name="default-width">600</property>
+    <property name="default-height">400</property>
+    <property name="resizable">true</property>
+    <style>
+      <class name="image-viewer-window"/>
+    </style>
+    <child>
+      <object class="GtkBox" id="main_container">
+        <property name="orientation">vertical</property>
+        <property name="spacing">0</property>
+        
+        <!-- Header bar with conversion button -->
+        <child>
+          <object class="GtkHeaderBar" id="header_bar">
+            <property name="title-widget">
+              <object class="GtkLabel">
+                <property name="label" translatable="yes">Image Viewer</property>
+                <property name="single-line-mode">true</property>
+                <property name="ellipsize">end</property>
+              </object>
+            </property>
+            <property name="show-title-buttons">false</property>
+            
+            <!-- Conversion toggle button on the left -->
+            <child type="start">
+              <object class="GtkToggleButton" id="conversion_button">
+                <property name="icon-name">image-filter-symbolic</property>
+                <property name="tooltip-text" translatable="yes">Convert to black and white</property>
+                <property name="sensitive">true</property>
+                <property name="focus-on-click">true</property>
+                
+                <!-- Accessibility attributes -->
+                <accessibility>
+                  <property name="label" translatable="yes">Black and White Conversion Toggle</property>
+                  <property name="description" translatable="yes">Toggle button to convert the image between color and black and white modes</property>
+                </accessibility>
+                
+                <signal name="toggled" handler="on_conversion_button_toggled" swapped="no"/>
+                <style>
+                  <class name="image-viewer-button"/>
+                </style>
+              </object>
+            </child>
+            
+            <!-- Blur intensity control on the right -->
+            <child type="end">
+              <object class="GtkBox" id="blur_container">
+                <property name="orientation">horizontal</property>
+                <property name="spacing">8</property>
+                <property name="margin-start">12</property>
+                <property name="margin-end">8</property>
+                <property name="halign">end</property>
+                <property name="valign">center</property>
+                
+                <!-- Blur icon -->
+                <child>
+                  <object class="GtkImage" id="blur_icon">
+                    <property name="icon-name">image-filter-symbolic</property>
+                    <property name="icon-size">normal</property>
+                    <property name="tooltip-text" translatable="yes">Blur intensity</property>
+                    <style>
+                      <class name="blur-icon"/>
+                    </style>
+                  </object>
+                </child>
+                
+                <!-- Blur intensity slider -->
+                <child>
+                  <object class="GtkScale" id="blur_scale">
+                    <property name="orientation">horizontal</property>
+                    <property name="adjustment">blur_adjustment</property>
+                    <property name="draw-value">false</property>
+                    <property name="width-request">150</property>
+                    <property name="height-request">-1</property>
+                    <property name="tooltip-text" translatable="yes">Adjust blur intensity from 0.0 (no blur) to 10.0 (maximum blur)</property>
+                    <property name="hexpand">false</property>
+                    <property name="valign">center</property>
+                    
+                    <!-- Accessibility attributes -->
+                    <accessibility>
+                      <property name="label" translatable="yes">Blur Intensity Slider</property>
+                      <property name="description" translatable="yes">Slider to adjust the blur intensity from 0.0 for no blur to 10.0 for maximum blur</property>
+                    </accessibility>
+                    
+                    <signal name="value-changed" handler="on_blur_scale_value_changed" swapped="no"/>
+                    <style>
+                      <class name="blur-slider"/>
+                    </style>
+                  </object>
+                </child>
+                
+                <!-- Blur intensity value display -->
+                <child>
+                  <object class="GtkLabel" id="blur_value_label">
+                    <property name="label">0.0</property>
+                    <property name="width-chars">3</property>
+                    <property name="xalign">0.5</property>
+                    <property name="valign">center</property>
+                    <property name="tooltip-text" translatable="yes">Current blur intensity value</property>
+                    <style>
+                      <class name="blur-value-label"/>
+                    </style>
+                  </object>
+                </child>
+                
+                <style>
+                  <class name="blur-container"/>
+                </style>
+              </object>
+            </child>
+          </object>
+        </child>
+        
+        <!-- Image display area with scrolling -->
+        <child>
+          <object class="GtkScrolledWindow" id="scrolled_window">
+            <property name="hexpand">true</property>
+            <property name="vexpand">true</property>
+            <property name="hscrollbar-policy">automatic</property>
+            <property name="vscrollbar-policy">automatic</property>
+            <property name="propagate-natural-width">true</property>
+            <property name="propagate-natural-height">true</property>
+            <style>
+              <class name="image-scrolled-window"/>
+            </style>
+            <child>
+              <object class="GtkPicture" id="image_widget">
+                <property name="content-fit">contain</property>
+                <property name="can-shrink">true</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                
+                <style>
+                  <class name="image-picture"/>
+                </style>
+                
+                <!-- Accessibility attributes -->
+                <accessibility>
+                  <property name="label" translatable="yes">Image Display</property>
+                  <property name="description" translatable="yes">Main image display area showing the loaded image in color or black and white mode</property>
+                </accessibility>
+              </object>
+            </child>
+          </object>
+        </child>
+        
+      </object>
+    </child>
+  </template>
+  
+  <!-- Blur intensity adjustment for slider -->
+  <object class="GtkAdjustment" id="blur_adjustment">
+    <property name="lower">0.0</property>
+    <property name="upper">10.0</property>
+    <property name="value">0.0</property>
+    <property name="step-increment">0.1</property>
+    <property name="page-increment">1.0</property>
+    <property name="page-size">0.0</property>
+  </object>
+</interface>
