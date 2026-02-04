@@ -132,13 +132,24 @@ def run_performance_tests():
     """Main performance test runner."""
     print("=== Image B&W Conversion Performance Tests ===")
     
-    # Find the application binary
+    # Find the application binary (try both common build directories)
     script_dir = Path(__file__).parent
     project_root = script_dir.parent.parent
-    app_path = project_root / "build" / "hello-app"
     
-    if not app_path.exists():
-        print(f"❌ Application not found at: {app_path}")
+    # Try both build and builddir (CI uses builddir)
+    possible_paths = [
+        project_root / "build" / "hello-app",
+        project_root / "builddir" / "hello-app"
+    ]
+    
+    app_path = None
+    for path in possible_paths:
+        if path.exists():
+            app_path = path
+            break
+    
+    if app_path is None:
+        print(f"❌ Application not found at any of: {[str(p) for p in possible_paths]}")
         print("Please build the application first with: meson compile -C build")
         return False
     

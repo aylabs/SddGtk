@@ -41,7 +41,8 @@ jobs:
           valgrind \
           libxml2-utils \
           check \
-          xvfb
+          xvfb \
+          imagemagick
         pip3 install pillow
         
     - name: Configure build
