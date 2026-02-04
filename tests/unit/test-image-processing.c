@@ -5,8 +5,10 @@
 /* Macro to skip GTK-dependent tests when GTK is not available */
 #define SKIP_IF_NO_GTK() do { \
     if (!gtk_is_initialized()) { \
-        ck_assert_msg(1, "GTK not available - test skipped"); \
-        return; \
+        if (!gtk_init_check()) { \
+            ck_assert_msg(1, "GTK not available - test skipped"); \
+            return; \
+        } \
     } \
 } while(0)
 
@@ -18,10 +20,7 @@
 static void
 setup(void)
 {
-    /* Initialize GTK if possible - tests will check success individually */
-    if (!gtk_is_initialized()) {
-        gtk_init_check();  /* This may fail in headless environments */
-    }
+    /* Empty setup - each test handles its own GTK initialization as needed */
 }
 
 /**
@@ -30,9 +29,7 @@ setup(void)
 static void
 teardown(void)
 {
-    /* Process any pending GTK events */
-    while (g_main_context_pending(NULL))
-        g_main_context_iteration(NULL, FALSE);
+    /* Empty teardown */
 }
 
 /**
@@ -226,7 +223,6 @@ image_processing_suite(void)
     /* Validation test cases */
     tc_validate = tcase_create("Validation");
     tcase_set_timeout(tc_validate, 5);  /* 5 second timeout */
-    tcase_add_checked_fixture(tc_validate, setup, teardown);
     tcase_add_test(tc_validate, test_validate_pixbuf_null_input);
     tcase_add_test(tc_validate, test_validate_pixbuf_valid_input);
     tcase_add_test(tc_validate, test_validate_pixbuf_with_alpha);
@@ -235,7 +231,6 @@ image_processing_suite(void)
     /* Memory estimation test cases */
     tc_memory = tcase_create("MemoryEstimation");
     tcase_set_timeout(tc_memory, 5);  /* 5 second timeout */
-    tcase_add_checked_fixture(tc_memory, setup, teardown);
     tcase_add_test(tc_memory, test_estimate_memory_usage_small);
     tcase_add_test(tc_memory, test_estimate_memory_usage_large);
     suite_add_tcase(s, tc_memory);
