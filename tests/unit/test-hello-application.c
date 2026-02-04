@@ -1,13 +1,16 @@
 #include <check.h>
 #include <gtk/gtk.h>
-#include "../src/hello-app/hello-application.h"
-#include "../src/hello-app/hello-window.h"
+#include "src/hello-app/hello-application.h"
+#include "src/hello-app/hello-window.h"
 
 /* Test fixtures */
 static void
 setup(void)
 {
     gtk_init();
+    /* Give GTK time to initialize properly */
+    while (g_main_context_pending(NULL))
+        g_main_context_iteration(NULL, FALSE);
 }
 
 static void

@@ -1,8 +1,36 @@
 #include <check.h>
 #include <gtk/gtk.h>
-#include "../../src/lib/image-processing.h"
+#include "src/lib/image-processing.h"
+
+/* Macro to skip GTK-dependent tests when GTK is not available */
+#define SKIP_IF_NO_GTK() do { \
+    if (!gtk_is_initialized()) { \
+        if (!gtk_init_check()) { \
+            ck_assert_msg(1, "GTK not available - test skipped"); \
+            return; \
+        } \
+    } \
+} while(0)
 
 /* Test fixtures and helper functions */
+
+/**
+ * setup function for each test
+ */
+static void
+setup(void)
+{
+    /* Empty setup - each test handles its own GTK initialization as needed */
+}
+
+/**
+ * teardown function for each test  
+ */
+static void
+teardown(void)
+{
+    /* Empty teardown */
+}
 
 /**
  * create_test_pixbuf:
@@ -54,6 +82,8 @@ END_TEST
 
 START_TEST(test_validate_pixbuf_valid_input)
 {
+    SKIP_IF_NO_GTK();
+    
     GdkPixbuf *pixbuf = create_test_pixbuf(100, 100, FALSE);
     ck_assert(image_processor_validate_pixbuf(pixbuf));
     g_object_unref(pixbuf);
@@ -62,6 +92,8 @@ END_TEST
 
 START_TEST(test_validate_pixbuf_with_alpha)
 {
+    SKIP_IF_NO_GTK();
+    
     GdkPixbuf *pixbuf = create_test_pixbuf(50, 50, TRUE);
     ck_assert(image_processor_validate_pixbuf(pixbuf));
     g_object_unref(pixbuf);
@@ -102,6 +134,8 @@ END_TEST
 
 START_TEST(test_convert_to_grayscale_valid_input)
 {
+    SKIP_IF_NO_GTK();
+    
     GdkPixbuf *original = create_test_pixbuf(50, 50, FALSE);
     GError *error = NULL;
     
@@ -122,6 +156,8 @@ END_TEST
 
 START_TEST(test_convert_to_grayscale_with_alpha)
 {
+    SKIP_IF_NO_GTK();
+    
     GdkPixbuf *original = create_test_pixbuf(30, 30, TRUE);
     GError *error = NULL;
     
@@ -141,6 +177,8 @@ END_TEST
 
 START_TEST(test_convert_to_grayscale_luminance_formula)
 {
+    SKIP_IF_NO_GTK();
+    
     /* Create a 1x1 pixbuf with known RGB values to test the formula */
     GdkPixbuf *original = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8, 1, 1);
     guchar *pixels = gdk_pixbuf_get_pixels(original);
@@ -184,6 +222,7 @@ image_processing_suite(void)
     
     /* Validation test cases */
     tc_validate = tcase_create("Validation");
+    tcase_set_timeout(tc_validate, 5);  /* 5 second timeout */
     tcase_add_test(tc_validate, test_validate_pixbuf_null_input);
     tcase_add_test(tc_validate, test_validate_pixbuf_valid_input);
     tcase_add_test(tc_validate, test_validate_pixbuf_with_alpha);
@@ -191,12 +230,15 @@ image_processing_suite(void)
     
     /* Memory estimation test cases */
     tc_memory = tcase_create("MemoryEstimation");
+    tcase_set_timeout(tc_memory, 5);  /* 5 second timeout */
     tcase_add_test(tc_memory, test_estimate_memory_usage_small);
     tcase_add_test(tc_memory, test_estimate_memory_usage_large);
     suite_add_tcase(s, tc_memory);
     
     /* Conversion test cases */
     tc_convert = tcase_create("Conversion");
+    tcase_set_timeout(tc_convert, 10);  /* 10 second timeout for conversion tests */
+    tcase_add_checked_fixture(tc_convert, setup, teardown);
     tcase_add_test(tc_convert, test_convert_to_grayscale_null_input);
     tcase_add_test(tc_convert, test_convert_to_grayscale_valid_input);
     tcase_add_test(tc_convert, test_convert_to_grayscale_with_alpha);

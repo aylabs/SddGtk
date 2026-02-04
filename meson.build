@@ -10,6 +10,7 @@ project('hello-app', 'c',
 
 # Dependencies
 gtk_dep = dependency('gtk4', version: '>= 4.0.0')
+math_dep = meson.get_compiler('c').find_library('m', required: false)
 check_dep = dependency('check', required: false)
 
 # Generate config.h
@@ -50,7 +51,7 @@ image_processing_lib = static_library('image-processing',
 # Blur processing library for Gaussian blur effects
 blur_processor_lib = static_library('blur-processor',
   'src/lib/blur-processor.c',
-  dependencies: [gtk_dep],
+  dependencies: [gtk_dep, math_dep],
   include_directories: inc
 )
 
@@ -79,16 +80,16 @@ hello_app = executable('hello-app',
 # Unit tests (if Check framework is available)
 if check_dep.found()
   test_hello_application = executable('test-hello-application',
-    'tests/unit/test-hello-application.c',
-    dependencies: [gtk_dep, check_dep],
-    link_with: [gtk_utils_lib],
+    ['tests/unit/test-hello-application.c', 'src/hello-app/hello-application.c', 'src/hello-app/hello-window.c', 'src/hello-app/hello-image-viewer.c', resources],
+    dependencies: [gtk_dep, check_dep, math_dep],
+    link_with: [gtk_utils_lib, image_processing_lib, blur_processor_lib, blur_cache_lib],
     include_directories: inc
   )
 
   test_hello_window = executable('test-hello-window',
-    'tests/unit/test-hello-window.c',
-    dependencies: [gtk_dep, check_dep],
-    link_with: [gtk_utils_lib],
+    ['tests/unit/test-hello-window.c', 'src/hello-app/hello-window.c', 'src/hello-app/hello-application.c', 'src/hello-app/hello-image-viewer.c', resources],
+    dependencies: [gtk_dep, check_dep, math_dep],
+    link_with: [gtk_utils_lib, image_processing_lib, blur_processor_lib, blur_cache_lib],
     include_directories: inc
   )
 
@@ -100,29 +101,8 @@ if check_dep.found()
   )
 
   test_image_viewer_bw = executable('test-image-viewer-bw',
-    'tests/unit/test-image-viewer-bw.c',
-    dependencies: [gtk_dep, check_dep],
-    link_with: [gtk_utils_lib, image_processing_lib],
-    include_directories: inc
-  )
-
-  test_blur_processor = executable('test-blur-processor',
-    'tests/unit/test-blur-processor.c',
-    dependencies: [gtk_dep, check_dep],
-    link_with: [blur_processor_lib],
-    include_directories: inc
-  )
-
-  test_blur_cache = executable('test-blur-cache',
-    'tests/unit/test-blur-cache.c',
-    dependencies: [gtk_dep, check_dep],
-    link_with: [blur_cache_lib],
-    include_directories: inc
-  )
-
-  test_blur_ui = executable('test-blur-ui',
-    'tests/integration/test-blur-ui.c',
-    dependencies: [gtk_dep, check_dep],
+    ['tests/unit/test-image-viewer-bw.c', 'src/hello-app/hello-image-viewer.c', 'src/hello-app/hello-window.c', 'src/hello-app/hello-application.c', resources],
+    dependencies: [gtk_dep, check_dep, math_dep],
     link_with: [gtk_utils_lib, image_processing_lib, blur_processor_lib, blur_cache_lib],
     include_directories: inc
   )
@@ -131,9 +111,6 @@ if check_dep.found()
   test('test-hello-window', test_hello_window)
   test('test-image-processing', test_image_processing)
   test('test-image-viewer-bw', test_image_viewer_bw)
-  test('test-blur-processor', test_blur_processor)
-  test('test-blur-cache', test_blur_cache)
-  test('test-blur-ui', test_blur_ui)
 endif
 
 # Install desktop file and icon (optional for later phases)

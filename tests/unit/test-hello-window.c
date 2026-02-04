@@ -1,24 +1,45 @@
 #include <check.h>
 #include <gtk/gtk.h>
-#include "../src/hello-app/hello-application.h"
-#include "../src/hello-app/hello-window.h"
+#include "src/hello-app/hello-application.h"
+#include "src/hello-app/hello-window.h"
 
 /* Test fixtures */
 static HelloApplication *test_app = NULL;
+static GMainLoop *test_loop = NULL;
+
+static gboolean
+startup_timeout(gpointer user_data)
+{
+    g_main_loop_quit((GMainLoop *)user_data);
+    return G_SOURCE_REMOVE;
+}
 
 static void
 setup(void)
 {
     gtk_init();
     test_app = hello_application_new();
+    
+    /* Register and hold the application for testing */
+    g_application_register(G_APPLICATION(test_app), NULL, NULL);
+    g_application_hold(G_APPLICATION(test_app));
+    
+    /* Ensure application startup is complete */
+    test_loop = g_main_loop_new(NULL, FALSE);
+    g_timeout_add(100, startup_timeout, test_loop);
+    g_main_loop_run(test_loop);
+    g_main_loop_unref(test_loop);
+    test_loop = NULL;
 }
 
 static void
 teardown(void)
 {
-    if (test_app) {
-        g_object_unref(test_app);
-        test_app = NULL;
+    if (test_app && G_IS_APPLICATION(test_app)) {
+        if (g_application_get_is_registered(G_APPLICATION(test_app))) {
+            g_application_release(G_APPLICATION(test_app));
+        }
+        g_clear_object(&test_app);
     }
     
     /* Clean up any test resources */
@@ -37,7 +58,7 @@ START_TEST(test_hello_window_creation)
     ck_assert(GTK_IS_APPLICATION_WINDOW(window));
     ck_assert(GTK_IS_WINDOW(window));
     
-    gtk_widget_destroy(GTK_WIDGET(window));
+    /* Window will be destroyed automatically when app is released */
 }
 END_TEST
 
@@ -64,7 +85,7 @@ START_TEST(test_hello_window_properties)
     ck_assert_int_eq(width, 400);
     ck_assert_int_eq(height, 300);
     
-    gtk_widget_destroy(GTK_WIDGET(window));
+    /* Window cleanup handled by application teardown */
 }
 END_TEST
 
@@ -90,7 +111,7 @@ START_TEST(test_hello_window_greeting_property)
     greeting = hello_window_get_greeting(window);
     ck_assert_str_eq(greeting, "Hello World!"); /* Should revert to default */
     
-    gtk_widget_destroy(GTK_WIDGET(window));
+    /* Window cleanup handled by application teardown */
 }
 END_TEST
 
@@ -106,8 +127,7 @@ START_TEST(test_hello_window_close_button)
     /* This is a basic existence test - more complex interaction testing would require DoGTail */
     ck_assert(GTK_IS_WINDOW(window));
     
-    /* Clean up */
-    gtk_widget_destroy(GTK_WIDGET(window));
+    /* Window cleanup handled by application teardown */
 }
 END_TEST
 
