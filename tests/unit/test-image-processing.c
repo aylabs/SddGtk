@@ -5,6 +5,28 @@
 /* Test fixtures and helper functions */
 
 /**
+ * setup function for each test
+ */
+static void
+setup(void)
+{
+    if (!gtk_is_initialized()) {
+        gtk_init();
+    }
+}
+
+/**
+ * teardown function for each test  
+ */
+static void
+teardown(void)
+{
+    /* Process any pending GTK events */
+    while (g_main_context_pending(NULL))
+        g_main_context_iteration(NULL, FALSE);
+}
+
+/**
  * create_test_pixbuf:
  * @width: Width in pixels
  * @height: Height in pixels  
@@ -185,6 +207,7 @@ image_processing_suite(void)
     /* Validation test cases */
     tc_validate = tcase_create("Validation");
     tcase_set_timeout(tc_validate, 5);  /* 5 second timeout */
+    tcase_add_checked_fixture(tc_validate, setup, teardown);
     tcase_add_test(tc_validate, test_validate_pixbuf_null_input);
     tcase_add_test(tc_validate, test_validate_pixbuf_valid_input);
     tcase_add_test(tc_validate, test_validate_pixbuf_with_alpha);
@@ -193,6 +216,7 @@ image_processing_suite(void)
     /* Memory estimation test cases */
     tc_memory = tcase_create("MemoryEstimation");
     tcase_set_timeout(tc_memory, 5);  /* 5 second timeout */
+    tcase_add_checked_fixture(tc_memory, setup, teardown);
     tcase_add_test(tc_memory, test_estimate_memory_usage_small);
     tcase_add_test(tc_memory, test_estimate_memory_usage_large);
     suite_add_tcase(s, tc_memory);
@@ -200,6 +224,7 @@ image_processing_suite(void)
     /* Conversion test cases */
     tc_convert = tcase_create("Conversion");
     tcase_set_timeout(tc_convert, 10);  /* 10 second timeout for conversion tests */
+    tcase_add_checked_fixture(tc_convert, setup, teardown);
     tcase_add_test(tc_convert, test_convert_to_grayscale_null_input);
     tcase_add_test(tc_convert, test_convert_to_grayscale_valid_input);
     tcase_add_test(tc_convert, test_convert_to_grayscale_with_alpha);
