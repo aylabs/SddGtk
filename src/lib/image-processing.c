@@ -90,7 +90,13 @@ image_processor_estimate_memory_usage(gint width, gint height)
 GdkPixbuf*
 image_processor_convert_to_grayscale(GdkPixbuf *original, GError **error)
 {
-    g_return_val_if_fail(original != NULL, NULL);
+    /* Check for NULL input and set error appropriately */
+    if (original == NULL) {
+        g_set_error(error, IMAGE_PROCESSOR_ERROR,
+                   IMAGE_PROCESSOR_ERROR_INVALID_INPUT,
+                   "Input image cannot be NULL");
+        return NULL;
+    }
     
     /* Validate input pixbuf */
     if (!image_processor_validate_pixbuf(original)) {

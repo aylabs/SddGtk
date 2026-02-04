@@ -20,9 +20,12 @@ setup(void)
     gtk_init();
     test_app = hello_application_new();
     
+    /* Register and hold the application for testing */
+    g_application_register(G_APPLICATION(test_app), NULL, NULL);
+    g_application_hold(G_APPLICATION(test_app));
+    
     /* Ensure application startup is complete */
     test_loop = g_main_loop_new(NULL, FALSE);
-    g_application_register(G_APPLICATION(test_app), NULL, NULL);
     g_timeout_add(100, startup_timeout, test_loop);
     g_main_loop_run(test_loop);
     g_main_loop_unref(test_loop);
