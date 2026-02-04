@@ -41,6 +41,9 @@ teardown_test_fixtures(void)
     }
     test_image_path = NULL;
 }
+
+/**
+ * Test: Multiple window instance isolation
  * Verifies that each HelloImageViewer window maintains independent state
  */
 static void
