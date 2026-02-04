@@ -58,7 +58,7 @@ START_TEST(test_hello_window_creation)
     ck_assert(GTK_IS_APPLICATION_WINDOW(window));
     ck_assert(GTK_IS_WINDOW(window));
     
-    gtk_window_destroy(GTK_WINDOW(window));
+    /* Window will be destroyed automatically when app is released */
 }
 END_TEST
 
@@ -85,7 +85,7 @@ START_TEST(test_hello_window_properties)
     ck_assert_int_eq(width, 400);
     ck_assert_int_eq(height, 300);
     
-    gtk_window_destroy(GTK_WINDOW(window));
+    /* Window cleanup handled by application teardown */
 }
 END_TEST
 
@@ -111,7 +111,7 @@ START_TEST(test_hello_window_greeting_property)
     greeting = hello_window_get_greeting(window);
     ck_assert_str_eq(greeting, "Hello World!"); /* Should revert to default */
     
-    gtk_window_destroy(GTK_WINDOW(window));
+    /* Window cleanup handled by application teardown */
 }
 END_TEST
 
@@ -127,8 +127,7 @@ START_TEST(test_hello_window_close_button)
     /* This is a basic existence test - more complex interaction testing would require DoGTail */
     ck_assert(GTK_IS_WINDOW(window));
     
-    /* Clean up */
-    gtk_window_destroy(GTK_WINDOW(window));
+    /* Window cleanup handled by application teardown */
 }
 END_TEST
 
