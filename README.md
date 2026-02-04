@@ -24,6 +24,14 @@ This application serves as a foundation example for GTK4 development, showcasing
   - Independent state per viewer window
   - Processing feedback and error handling
   - Full accessibility support
+- **Image Blur Effect with Intensity Control**: Real-time blur effect with adjustable intensity
+  - Gaussian blur slider with range 0.0 (no blur) to 10.0 (maximum blur)
+  - Real-time preview as user adjusts the slider
+  - High-performance processing with intelligent caching system
+  - Memory-efficient LRU cache for blur results
+  - Smooth interaction even with large HD images (1920x1080)
+  - Independent blur state per viewer window
+  - Automatic cache management and memory optimization
 - Support for common image formats (PNG, JPEG, GIF, SVG, WebP)
 - Proper application lifecycle management
 - Clean window close behavior
@@ -116,6 +124,20 @@ The image viewer includes a toggle button in the header bar for converting image
 - **Performance**: HD images (1920x1080) convert in under 10ms
 - **Accessibility**: Full screen reader support and keyboard navigation
 
+### Image Blur Effect Feature
+
+The image viewer includes a blur intensity slider for applying real-time blur effects:
+
+- **Blur Slider**: Horizontal scale control with range 0.0 (no blur) to 10.0 (maximum blur)
+- **Real-time Preview**: Instant visual feedback as you drag the slider
+- **Gaussian Blur Algorithm**: High-quality blur processing with configurable intensity
+- **Performance Optimization**: Intelligent caching system for smooth interaction
+- **Memory Management**: LRU cache automatically manages memory usage
+- **Cache Efficiency**: Blur results cached with configurable size limits (default 100MB)
+- **Independent State**: Each viewer window maintains its own blur setting
+- **Automatic Cleanup**: Cache entries automatically expire and cleanup unused results
+- **High Performance**: HD images (1920x1080) blur in under 50ms with caching
+
 ### Supported Image Formats
 
 - PNG (Portable Network Graphics)
@@ -129,6 +151,9 @@ The image viewer includes a toggle button in the header bar for converting image
 - **Ctrl+O**: Open image file (from main window)
 - **Ctrl+W**: Close current window
 - **Space**: Toggle B&W conversion (when image viewer is focused)
+- **Ctrl+0**: Reset blur to zero (no blur effect)
+- **Ctrl+Plus**: Increase blur intensity by 1.0
+- **Ctrl+Minus**: Decrease blur intensity by 1.0
 - **Escape**: Close current window
 
 ## Testing
@@ -144,6 +169,9 @@ meson test
 ./test-hello-window
 ./test-image-processing
 ./test-image-viewer-bw
+./test-blur-processor        # Blur algorithm unit tests
+./test-blur-cache           # Blur cache system tests  
+./test-blur-integration     # Blur feature integration tests
 ```
 
 ### Performance Tests
@@ -151,6 +179,12 @@ meson test
 ```bash
 # Test B&W conversion performance
 python3 ../tests/performance/test_performance.py
+
+# Test blur effect performance and memory usage
+python3 ../tests/performance/blur_performance.py
+
+# Profile blur cache memory usage
+python3 ../tests/performance/blur_memory_profile.py
 ```
 
 ### Validation Tests
@@ -191,16 +225,23 @@ src/
 │       └── hello-image-viewer.ui # Image viewer UI template with conversion button
 ├── lib/
 │   ├── gtk-utils.{c,h}           # Reusable GTK utilities
-│   └── image-processing.{c,h}    # Image conversion algorithms (ITU-R BT.709)
+│   ├── image-processing.{c,h}    # Image conversion algorithms (ITU-R BT.709)
+│   ├── blur-processor.{c,h}      # Gaussian blur processing engine
+│   └── blur-cache.{c,h}          # LRU cache system for blur results
 tests/
 ├── unit/                         # C unit tests using Check framework
 │   ├── test-hello-application.c  # Application unit tests
 │   ├── test-hello-window.c       # Window unit tests
 │   ├── test-image-processing.c   # Image conversion unit tests
-│   └── test-image-viewer-bw.c    # B&W feature unit tests
+│   ├── test-image-viewer-bw.c    # B&W feature unit tests
+│   ├── test-blur-processor.c     # Blur algorithm unit tests
+│   ├── test-blur-cache.c         # Blur cache system unit tests
+│   └── test-blur-integration.c   # Blur feature integration tests
 ├── integration/                  # Python integration tests using DoGTail  
 ├── performance/                  # Performance and memory tests
-│   └── test_performance.py       # Image conversion performance tests
+│   ├── test_performance.py       # Image conversion performance tests
+│   ├── blur_performance.py       # Blur effect performance tests
+│   └── blur_memory_profile.py    # Blur cache memory profiling
 ├── validation/                   # Cross-platform validation tests
 │   └── test_validation.py        # Platform compatibility validation
 └── platform/                    # Cross-platform validation scripts
@@ -324,6 +365,11 @@ MIT License - See LICENSE file for details.
 
 ## Documentation
 
+### Project Documentation
+- **Feature Overview**: [FEATURES.md](FEATURES.md) - Comprehensive feature documentation
+- **Version History**: [CHANGELOG.md](CHANGELOG.md) - Detailed change log and version notes
+- **Architecture Guide**: This README - Complete setup, usage, and architecture documentation
+
 ### Hello Application (Base)
 - **Specification**: [specs/001-hello-app/spec.md](specs/001-hello-app/spec.md)
 - **Implementation Plan**: [specs/001-hello-app/plan.md](specs/001-hello-app/plan.md)
@@ -339,3 +385,18 @@ MIT License - See LICENSE file for details.
 - **Data Model**: [specs/002-image-bw-convert/data-model.md](specs/002-image-bw-convert/data-model.md)
 - **API Contracts**: [specs/002-image-bw-convert/contracts/](specs/002-image-bw-convert/contracts/)
 - **Quick Start Guide**: [specs/002-image-bw-convert/quickstart.md](specs/002-image-bw-convert/quickstart.md)
+
+### Image Blur Effect Feature
+- **Feature Specification**: [specs/003-image-blur-effect/spec.md](specs/003-image-blur-effect/spec.md)
+- **Implementation Plan**: [specs/003-image-blur-effect/plan.md](specs/003-image-blur-effect/plan.md)
+- **Task Breakdown**: [specs/003-image-blur-effect/tasks.md](specs/003-image-blur-effect/tasks.md)
+- **Technical Research**: [specs/003-image-blur-effect/research.md](specs/003-image-blur-effect/research.md)
+- **Data Model**: [specs/003-image-blur-effect/data-model.md](specs/003-image-blur-effect/data-model.md)
+- **API Contracts**: [specs/003-image-blur-effect/contracts/](specs/003-image-blur-effect/contracts/)
+- **Quick Start Guide**: [specs/003-image-blur-effect/quickstart.md](specs/003-image-blur-effect/quickstart.md)
+
+### Blur Testing Infrastructure
+- **Testing Coverage Plan**: [specs/004-blur-testing-coverage/plan.md](specs/004-blur-testing-coverage/plan.md)
+- **Task Breakdown**: [specs/004-blur-testing-coverage/tasks.md](specs/004-blur-testing-coverage/tasks.md)
+- **Test Contracts**: [specs/004-blur-testing-coverage/contracts/](specs/004-blur-testing-coverage/contracts/)
+- **Test Coverage Reports**: Performance, unit, integration, and memory validation tests
