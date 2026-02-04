@@ -53,6 +53,9 @@ jobs:
     - name: Run all tests
       run: |
         echo "Running comprehensive test suite..."
+        echo "Display: $DISPLAY"
+        echo "Available tests:"
+        find builddir -name "test-*" -executable -type f || true
         xvfb-run -a --server-args="-screen 0 1024x768x24" ./scripts/run-tests.sh
         
     - name: Upload test results

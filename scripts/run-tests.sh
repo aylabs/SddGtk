@@ -9,8 +9,14 @@ mkdir -p test-results
 echo "🧪 Running Unit Tests..."
 if [ -d "builddir" ]; then
     echo "  ➤ Running Meson tests..."
-    meson test -C builddir --verbose || {
+    # Set GTK to use X11 backend explicitly for consistency
+    export GDK_BACKEND=x11
+    export DISPLAY=${DISPLAY:-:99}
+    
+    meson test -C builddir --verbose --no-stdsplit || {
         echo "❌ Unit tests failed"
+        echo "📋 Test log summary:"
+        find builddir/meson-logs -name "*test*.txt" -exec echo "=== {} ===" \; -exec cat {} \; 2>/dev/null || true
         exit 1
     }
     echo "  ✅ Unit tests passed"
