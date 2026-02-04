@@ -35,10 +35,11 @@ setup(void)
 static void
 teardown(void)
 {
-    if (test_app) {
-        g_application_release(G_APPLICATION(test_app));
-        g_object_unref(test_app);
-        test_app = NULL;
+    if (test_app && G_IS_APPLICATION(test_app)) {
+        if (g_application_get_is_registered(G_APPLICATION(test_app))) {
+            g_application_release(G_APPLICATION(test_app));
+        }
+        g_clear_object(&test_app);
     }
     
     /* Clean up any test resources */
