@@ -259,6 +259,12 @@ test_independent_window_behavior(void)
 int
 main(int argc, char *argv[])
 {
+    /* Try to initialize GTK, skip tests if not available */
+    if (!gtk_init_check()) {
+        g_print("GTK initialization failed - skipping all tests\n");
+        return 77; /* Skip code for meson test */
+    }
+    
     gtk_test_init(&argc, &argv);
     
     /* Add test cases */
