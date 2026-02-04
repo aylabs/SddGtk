@@ -277,6 +277,7 @@ Suite *blur_cache_suite(void) {
     tc_lru = tcase_create("LRU");
     tcase_add_test(tc_lru, test_lru_eviction_policy);
     tcase_add_test(tc_lru, test_key_generation_consistency);
+    tcase_add_checked_fixture(tc_lru, setup_blur_cache, teardown_blur_cache);
     suite_add_tcase(s, tc_lru);
     
     /* Statistics */
