@@ -129,13 +129,13 @@ if check_dep.found()
     include_directories: inc
   )
 
-  test('test-hello-application', test_hello_application)
-  test('test-hello-window', test_hello_window)
-  test('test-image-processing', test_image_processing)
-  test('test-image-viewer-bw', test_image_viewer_bw)
-  test('test-blur-processor', test_blur_processor)
-  test('test-blur-cache', test_blur_cache)
-  test('test-blur-integration', test_blur_integration)
+  test('test-hello-application', test_hello_application, env: {'DISPLAY': ''})
+  test('test-hello-window', test_hello_window, env: {'DISPLAY': ''})
+  test('test-image-processing', test_image_processing, env: {'DISPLAY': ''})
+  test('test-image-viewer-bw', test_image_viewer_bw, env: {'DISPLAY': ''})
+  test('test-blur-processor', test_blur_processor, env: {'DISPLAY': ''})
+  test('test-blur-cache', test_blur_cache, env: {'DISPLAY': ''})
+  test('test-blur-integration', test_blur_integration, env: {'DISPLAY': ''})
 endif
 
 # Install desktop file and icon (optional for later phases)
