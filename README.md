@@ -361,7 +361,10 @@ Follow the established development workflow:
 
 ## License
 
-MIT License - See LICENSE file for details.
+GNU Lesser General Public License v2.1 or later - See LICENSE.md file for details.
+
+This allows the library to be used in both open source and proprietary applications
+while ensuring that modifications to the library itself remain open source.
 
 ## Documentation
 
