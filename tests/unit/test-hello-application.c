@@ -8,6 +8,9 @@ static void
 setup(void)
 {
     gtk_init();
+    /* Give GTK time to initialize properly */
+    while (g_main_context_pending(NULL))
+        g_main_context_iteration(NULL, FALSE);
 }
 
 static void

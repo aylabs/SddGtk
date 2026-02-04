@@ -5,18 +5,35 @@
 
 /* Test fixtures */
 static HelloApplication *test_app = NULL;
+static GMainLoop *test_loop = NULL;
+
+static gboolean
+startup_timeout(gpointer user_data)
+{
+    g_main_loop_quit((GMainLoop *)user_data);
+    return G_SOURCE_REMOVE;
+}
 
 static void
 setup(void)
 {
     gtk_init();
     test_app = hello_application_new();
+    
+    /* Ensure application startup is complete */
+    test_loop = g_main_loop_new(NULL, FALSE);
+    g_application_register(G_APPLICATION(test_app), NULL, NULL);
+    g_timeout_add(100, startup_timeout, test_loop);
+    g_main_loop_run(test_loop);
+    g_main_loop_unref(test_loop);
+    test_loop = NULL;
 }
 
 static void
 teardown(void)
 {
     if (test_app) {
+        g_application_release(G_APPLICATION(test_app));
         g_object_unref(test_app);
         test_app = NULL;
     }

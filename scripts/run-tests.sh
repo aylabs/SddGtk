@@ -9,9 +9,11 @@ mkdir -p test-results
 echo "🧪 Running Unit Tests..."
 if [ -d "builddir" ]; then
     echo "  ➤ Running Meson tests..."
-    # Set GTK to use X11 backend explicitly for consistency
+    # Set GTK environment for headless testing
     export GDK_BACKEND=x11
     export DISPLAY=${DISPLAY:-:99}
+    export GTK_A11Y=none
+    export G_MESSAGES_DEBUG=none
     
     meson test -C builddir --verbose --no-stdsplit || {
         echo "❌ Unit tests failed"
