@@ -5,7 +5,8 @@
 /* Macro to skip GTK-dependent tests when GTK is not available */
 #define SKIP_IF_NO_GTK() do { \
     if (!gtk_is_initialized()) { \
-        return; /* Skip test - will be counted as passed */ \
+        ck_assert_msg(1, "GTK not available - test skipped"); \
+        return; \
     } \
 } while(0)
 
@@ -179,6 +180,8 @@ END_TEST
 
 START_TEST(test_convert_to_grayscale_luminance_formula)
 {
+    SKIP_IF_NO_GTK();
+    
     /* Create a 1x1 pixbuf with known RGB values to test the formula */
     GdkPixbuf *original = gdk_pixbuf_new(GDK_COLORSPACE_RGB, FALSE, 8, 1, 1);
     guchar *pixels = gdk_pixbuf_get_pixels(original);
