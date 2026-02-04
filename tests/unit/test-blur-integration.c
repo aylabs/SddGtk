@@ -240,6 +240,12 @@ int main(void) {
     Suite *s;
     SRunner *sr;
     
+    /* Try to initialize GTK, skip tests if not available */
+    if (!gtk_init_check()) {
+        g_print("GTK initialization failed - skipping all tests\n");
+        return 77; /* Skip code for meson test */
+    }
+    
     s = blur_integration_suite();
     sr = srunner_create(s);
     
